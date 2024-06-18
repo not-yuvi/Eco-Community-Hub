@@ -1,40 +1,59 @@
-// Import necessary modules from React
 import React, { useState } from 'react';
 
-// Define the Calculator component
 const Calculator = () => {
-    // Define state variables for travel type, miles, and carbon result
     const [travelType, setTravelType] = useState('car');
     const [miles, setMiles] = useState('');
     const [carbonResult, setCarbonResult] = useState('');
+    const [harmLevel, setHarmLevel] = useState('');
 
-    // Function to handle form submission
     const handleFormSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission
-        calculateCarbonFootprint(travelType, miles); // Calculate carbon footprint
+        e.preventDefault();
+        calculateCarbonFootprint(travelType, miles);
     }
 
-    // Function to calculate carbon footprint based on travel type and miles
     const calculateCarbonFootprint = (travelType, miles) => {
-        let carbonFootprint = 0; // Initialize carbon footprint
+        let carbonFootprint = 0;
 
-        // Calculate carbon footprint based on travel type
         switch (travelType) {
             case 'car':
-                carbonFootprint = miles * 0.404; // Carbon emission factor for car travel in kg CO2 per mile
+                carbonFootprint = miles * 0.404;
                 break;
             case 'flight':
-                carbonFootprint = miles * 0.257; // Carbon emission factor for flights in kg CO2 per mile
+                carbonFootprint = miles * 0.257;
+                break;
+            case 'bus':
+                carbonFootprint = miles * 0.089;
+                break;
+            case 'train':
+                carbonFootprint = miles * 0.049;
                 break;
             default:
-                carbonFootprint = 0; // Default carbon footprint
+                carbonFootprint = 0;
         }
 
-        // Set carbon result state variable
         setCarbonResult(carbonFootprint.toFixed(2));
+        calculateHarm(carbonFootprint); // Calculate harm based on carbon footprint
     };
 
-    // Return the form and result display
+    const calculateHarm = (carbonFootprint) => {
+        const thresholds = {
+            low: 1000,
+            moderate: 5000,
+            high: 10000
+        };
+
+        const carbonEmission = parseFloat(carbonFootprint);
+        if (carbonEmission < thresholds.low) {
+            setHarmLevel("Low harm: Minimal impact on the environment and health.");
+        } else if (carbonEmission < thresholds.moderate) {
+            setHarmLevel("Moderate harm: Significant environmental impact and potential health risks.");
+        } else if (carbonEmission < thresholds.high) {
+            setHarmLevel("High harm: Severe environmental damage and health hazards.");
+        } else {
+            setHarmLevel("Very high harm: Critical environmental degradation and severe health consequences.");
+        }
+    };
+
     return (
         <div className="container">
             <h2>Carbon Footprint Calculator</h2>
@@ -43,7 +62,8 @@ const Calculator = () => {
                 <select id="travelType" name="travelType" value={travelType} onChange={(e) => setTravelType(e.target.value)}>
                     <option value="car">Car Travel (miles)</option>
                     <option value="flight">Flight (miles)</option>
-                    {/* Add more options for different travel types */}
+                    <option value="bus">Bus Travel (miles)</option>
+                    <option value="train">Train Travel (miles)</option>
                 </select>
                 <br /><br />
                 <label htmlFor="miles">Miles:</label>
@@ -57,9 +77,14 @@ const Calculator = () => {
                     <p>{carbonResult} kg CO2 equivalent</p>
                 </div>
             )}
+            {harmLevel && (
+                <div id="harm">
+                    <h3>Harm Level:</h3>
+                    <p>{harmLevel}</p>
+                </div>
+            )}
         </div>
     );
 };
 
-// Export the Calculator component
 export default Calculator;
