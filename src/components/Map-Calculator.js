@@ -1,28 +1,40 @@
 /* eslint-disable no-unused-vars */
+
+
+// Import necessary modules from react and react-leaflet
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from 'react-leaflet';
+
+// Import leaflet-routing-machine for routing functionality
 import 'leaflet-routing-machine';
+
+// Import necessary CSS files
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet/dist/leaflet.css';
+
+// Import leaflet and marker icons
 import L from 'leaflet';
 import markerIconPng from 'leaflet/dist/images/marker-icon.png';
 import markerShadowPng from 'leaflet/dist/images/marker-shadow.png';
 
+// Delete the default icon URL
 delete L.Icon.Default.prototype._getIconUrl;
 
+// Merge new icon options
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
     iconUrl: require('leaflet/dist/images/marker-icon.png'),
     shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+// Define the MapCalculator component
 const MapCalculator = () => {
-    
+    // Define state variables for waypoints, carbon result, and route
     const [waypoints, setWaypoints] = useState([]);
     const [carbonResult, setCarbonResult] = useState(null);
     const [route, setRoute] = useState(null);
 
-    // Then in your icon definition
+    // Define a new icon
     const icon = new L.Icon({
         iconUrl: markerIconPng,
         shadowUrl: markerShadowPng,
@@ -31,13 +43,15 @@ const MapCalculator = () => {
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     });
-    // Then in your Marker component
+
+    // Map over waypoints and create a Marker for each
     waypoints.map((wp, index) => (
         <Marker key={index} position={wp} icon={icon}>
             <Popup>Waypoint {index + 1}</Popup>
         </Marker>
     ));
-    // Handle adding a waypoint on map click
+
+    // Function to handle adding a waypoint on map click
     const handleMapClick = (e) => {
         if (waypoints.length < 2) {
             setWaypoints([...waypoints, e.latlng]);
@@ -49,6 +63,7 @@ const MapCalculator = () => {
         }
     };
 
+    // Function to calculate emissions based on mode of transport
     const calculateEmissions = async (mode) => {
         if (waypoints.length !== 2) {
             alert('Please add exactly two waypoints to calculate emissions.');
@@ -88,9 +103,9 @@ const MapCalculator = () => {
             console.error('Error calculating route:', error);
             alert('Failed to calculate route. Please try again later.');
         }
-};
+    };
 
-    // MapEventsHandler component to handle map click events
+    // Component to handle map click events
     function MapEventsHandler() {
         const map = useMapEvents({
             click: handleMapClick,
@@ -98,6 +113,7 @@ const MapCalculator = () => {
         return null;
     }
 
+    // Return the MapContainer and associated components
     return (
         <div className="container">
             <h2>Map Calculator</h2>
@@ -126,4 +142,5 @@ const MapCalculator = () => {
     );
 }
 
+// Export the MapCalculator component
 export default MapCalculator;
