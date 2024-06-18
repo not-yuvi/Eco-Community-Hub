@@ -23,7 +23,7 @@ Eco Community Hub is a web application aimed at promoting environmental sustaina
 
 
 
-# Other:
+# Other Info:
 ## Inspiration
 
 The inspiration behind Eco Community Hub stems from our collective responsibility to address environmental challenges through technology and community engagement. _We aim to empower individuals and communities to take meaningful actions towards sustainability._
