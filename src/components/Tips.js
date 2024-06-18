@@ -12,6 +12,10 @@ const Tips = () => {
         <h3>Tip 2: Save Energy</h3>
         <p>Turn off lights and electronics when not in use to conserve energy.</p>
       </div>
+      <div className="tip">
+        <h3>Tip 3: Plant Trees</h3>
+        <p>Plant trees and support reforestation efforts to combat climate change.</p>
+      </div>
       {/* Add more tips */}
     </div>
   );
