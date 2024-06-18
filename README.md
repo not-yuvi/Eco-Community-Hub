@@ -15,4 +15,4 @@ Eco Community Hub is a web application aimed at promoting environmental sustaina
    cd eco-community-hub
    npm install
    npm install leaflet
-   npm start```
+   npm start
